@@ -9,7 +9,12 @@ export function Fetcher() {
   return (
     <div>
       <div>Press the button to fetch from a website!</div>
-      <button onClick={() => fetchedValue ? dispatch(clearValue()) : dispatch(fetchAsync('https://cors-demo.glitch.me/allow-cors'))}>
+      <button
+        onClick={() => fetchedValue
+          ? dispatch(clearValue())
+          : dispatch(fetchAsync('https://cors-demo.glitch.me/allow-cors'))}
+        disabled={fetchStatus === 'loading'}
+      >
         <span>{fetchedValue ? 'Reset' : 'Press me'}</span>
       </button>
       {fetchStatus === 'loading' && (

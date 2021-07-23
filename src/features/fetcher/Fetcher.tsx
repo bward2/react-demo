@@ -1,17 +1,23 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchAsync, selectFetchValue } from "./fetcherSlice";
+import { clearValue, fetchAsync, selectFetchStatus, selectFetchValue } from "./fetcherSlice";
 
 export function Fetcher() {
   const fetchedValue = useAppSelector(selectFetchValue);
+  const fetchStatus = useAppSelector(selectFetchStatus);
   const dispatch = useAppDispatch();
 
   return (
     <div>
-      <div>Press the button to fetch from a website using cors!</div>
-      <button onClick={() => dispatch(fetchAsync('https://cors-demo.glitch.me/allow-cors'))}>
-        <span>Press me</span>
+      <div>Press the button to fetch from a website!</div>
+      <button onClick={() => fetchedValue ? dispatch(clearValue()) : dispatch(fetchAsync('https://cors-demo.glitch.me/allow-cors'))}>
+        <span>{fetchedValue ? 'Reset' : 'Press me'}</span>
       </button>
-      <div>Here's the result: {fetchedValue}</div>
+      {fetchStatus === 'loading' && (
+        <div>Loading...</div>
+      )}
+      {fetchStatus === 'idle' && fetchedValue && (
+        <div>Here's the response code: {fetchedValue}</div>
+      )}
     </div>
   );
 }

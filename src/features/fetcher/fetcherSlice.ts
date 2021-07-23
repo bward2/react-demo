@@ -3,7 +3,7 @@ import { RootState } from "../../app/store";
 import { fetchText } from "./fetcherAPI";
 
 export interface FetcherState {
-  value: any;
+  value: string;
   status: 'idle' | 'loading' | 'failed';
 };
 
@@ -23,7 +23,11 @@ export const fetchAsync = createAsyncThunk(
 export const fetcherSlice = createSlice({
   name: 'fetcher',
   initialState,
-  reducers: {},
+  reducers: {
+    clearValue: (state) => {
+      state.value = '';
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAsync.pending, (state) => {
@@ -31,12 +35,14 @@ export const fetcherSlice = createSlice({
       })
       .addCase(fetchAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log(action);
         state.value = action.payload;
       });
   },
 });
 
+export const { clearValue } = fetcherSlice.actions;
+
 export const selectFetchValue = (state: RootState) => state.fetcher.value;
+export const selectFetchStatus = (state: RootState) => state.fetcher.status;
 
 export default fetcherSlice.reducer;

@@ -1,9 +1,9 @@
 export function fetchText(address: string) {
+  // Adding a one-second delay to show loading state
   return new Promise<any>((resolve) => {
-    fetch(address, {mode:'cors'})
+    setTimeout(() => fetch(address, {mode:'cors'})
       .then((response) => {
-        console.log(response);
         resolve(response.status);
-      });
+      }), 1000);
   });
 }
